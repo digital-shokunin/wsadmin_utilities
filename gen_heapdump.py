@@ -17,31 +17,31 @@ elif sys.executable is None:
             cn = AdminConfig.showAttribute(cell, 'name')
             nn = AdminConfig.showAttribute(node, 'name')
             nodelist.append([nn, cn])
-        selection = ''
-        while isinstance(selection, (int, long)):
+        selection = -1
+        while selection < 1:
             print "Select an option:"
             for item in nodelist:
                 name = item[0]
-                print (nodelist.index(name)+1)+". "+name
-            selection = raw_input("Enter selection: ")
-            if int(selection) > len(nodelist):
-                selection = ''
-        nn = [int(selection)-1][0]
-        cn = [int(selection)-1][1]
+                print str(nodelist.index(item)+1)+". "+name
+            selection = int(raw_input("Enter selection #: "))
+            if selection > len(nodelist):
+                selection = -1
+        nn = nodelist[selection-1][0]
+        cn = nodelist[selection-1][1]
         servers = AdminControl.queryNames('type=Server,cell='+cn+',node='+nn+',*').split()
         serverlist = []
         for server in servers:
-            sn = AdminConfig.showAttribute(server, 'serverName')
+            sn = AdminControl.getAttribute(server, 'serverName')
             serverlist.append(sn)
-        selection = ''
-        while isinstance(selection, (int, long)):
+        selection = -1
+        while selection < 1:
             print "Select an option:"
             for item in serverlist:
-                print (serverlist.index(item)+1)+". "+item
-            selection = raw_input("Enter selection: ")
-            if int(selection) > len(serverlist):
-                selection = ''
-        sn = serverlist(int(selection)-1)
+                print str(serverlist.index(item)+1)+". "+item
+            selection = int(raw_input("Enter selection #: "))
+            if selection > len(serverlist):
+                selection = -1
+        sn = serverlist[selection-1]
     gen_heapdump(sn, nn)
 else:
     #Get list of servers and print list for selection.
